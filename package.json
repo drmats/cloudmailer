@@ -1,0 +1,30 @@
+{
+    "bugs": {
+        "url": "https://github.com/drmats/cloudmailer/issues"
+    },
+    "contributors": [
+        {
+            "name": "drmats",
+            "email": "xcmats@protonmail.com",
+            "url": "https://twitter.com/xcmats/"
+        }
+    ],
+    "description": "A (very) small-scale transactional email service.",
+    "keywords": [
+        "transactional",
+        "email"
+    ],
+    "homepage": "https://github.com/drmats/cloudmailer",
+    "license": "BSD-2-Clause",
+    "name": "cloudmailer",
+    "private": true,
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/drmats/cloudmailer.git"
+    },
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Warning: no tests specified (yet)\""
+    },
+    "version": "0.0.1"
+}
