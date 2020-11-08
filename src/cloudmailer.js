@@ -14,25 +14,56 @@ const
 
 
 
-// current directory (`__dirname` is not defined in REPL)
-let curdir
-try { curdir = __dirname }
-catch (_) { curdir = path.resolve("."); }
+// ...
+function cloudmailer () {
 
+    // current directory (`__dirname` is not defined in REPL)
+    let curdir
+    try { curdir = __dirname }
+    catch (_) { curdir = path.resolve("."); }
 
+    // JWT class used to authorize against google services
+    // and obtain Access Token
+    const gjwt = new google.auth.JWT({
+        keyFile: path.join(curdir, "../secrets/client_auth.json"),
+        scopes: [
+            "https://mail.google.com/",
+            "https://www.googleapis.com/auth/gmail.modify",
+            "https://www.googleapis.com/auth/gmail.compose",
+            "https://www.googleapis.com/auth/gmail.send",
+        ],
+        subject: client.user,
+    });
 
+    // email sending logic
+    return async function send (recipient, subject, text, html) {
 
-// JWT class used to authorize against google services and obtain Access Token
-const gjwt = new google.auth.JWT({
-    keyFile: path.join(curdir, "../secrets/client_auth.json"),
-    scopes: [
-        "https://mail.google.com/",
-        "https://www.googleapis.com/auth/gmail.modify",
-        "https://www.googleapis.com/auth/gmail.compose",
-        "https://www.googleapis.com/auth/gmail.send",
-    ],
-    subject: client.user,
-});
+        let
+            { token } = await gjwt.getAccessToken(),
+            transport = createTransport({
+                host: "smtp.gmail.com",
+                port: 465,
+                secure: true,
+                auth: {
+                    type: "OAuth2",
+                    user: client.user,
+                    accessToken: token,
+                }
+            }),
+            response = await transport.sendMail({
+                from: client.from,
+                to: recipient,
+                subject,
+                text, html
+            });
+
+        transport.close();
+
+        return response;
+
+    }
+
+}
 
 
 
@@ -54,34 +85,6 @@ let compileTemplates = () => ({
 
 
 // ...
-async function sendEmail (recipient, subject, text, html) {
-
-    let
-        { token } = await gjwt.getAccessToken(),
-        transport = createTransport({
-            host: "smtp.gmail.com",
-            port: 465,
-            secure: true,
-            auth: {
-                type: "OAuth2",
-                user: client.user,
-                accessToken: token,
-            }
-        });
-
-    return await transport.sendMail({
-        from: client.from,
-        to: recipient,
-        subject,
-        text, html
-    });
-
-}
-
-
-
-
-// ...
 async function main () {
 
     let
@@ -89,7 +92,8 @@ async function main () {
             config, ["domains", 0, 1, "to"],
             "drmats <drmats@users.noreply.github.com>"
         ),
-        t = compileTemplates();
+        t = compileTemplates(),
+        sendEmail = cloudmailer();
 
     try {
 
