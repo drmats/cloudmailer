@@ -9,7 +9,7 @@ const
     { createTransport } = require("nodemailer"),
     hb = require("handlebars"),
     client = require("../secrets/client.json"),
-    config = require("../secrets/config.json")
+    config = require("../secrets/config.json");
 
 
 
@@ -17,7 +17,7 @@ const
 // current directory (`__dirname` is not defined in REPL)
 let curdir
 try { curdir = __dirname }
-catch (_) { curdir = path.resolve(".") }
+catch (_) { curdir = path.resolve("."); }
 
 
 
@@ -48,7 +48,7 @@ let compileTemplates = () => ({
     html: hb.compile(
         access(config, ["domains", 0, 1, "html"], "{{html}}")
     ),
-})
+});
 
 
 
@@ -85,7 +85,7 @@ async function main () {
                 html: t.html({ html: "Just... Hello 😎." }),
             });
 
-        console.log(info)
+        console.log(info);
 
     } catch (ex) {
 
