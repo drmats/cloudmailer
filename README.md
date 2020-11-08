@@ -9,11 +9,11 @@ A (very) small-scale transactional email service.
 
 ## why?
 
-There's a lot of good services out there: [sendgrid](sendgrid.com),
-[emaillabs](emaillabs.io), [sendinblue](sendinblue.com),
-[amazon ses](aws.amazon.com/ses/), [mailgun](mailgun.com) to name a few.
-But I want my own that is able to send messages using custom domain and ...
-I happen to have
+There's a lot of good services out there: [sendgrid](https://sendgrid.com/),
+[emaillabs](https://emaillabs.io/), [sendinblue](https://sendinblue.com/),
+[amazon ses](https://aws.amazon.com/ses/), [mailgun](https://mailgun.com/)
+to name a few. But I want my own that is able to send messages using custom
+domain and ... I happen to have
 [G Suite legacy free edition](https://support.google.com/a/answer/2855120).
 
 <br />
@@ -23,10 +23,11 @@ I happen to have
 
 ## what?
 
-[node.js](nodejs.org), [nodemailer](nodemailer.com), a little bit of
-[google cloud](https://cloud.google.com/) + it's
-[apis](www.npmjs.com/package/googleapis), [express.js](expressjs.com) and
-maybe a little bit of [templating](ejs.co)
+[node.js](https://nodejs.org/), [nodemailer](https://nodemailer.com/),
+a little bit of [google cloud](https://cloud.google.com/) + it's
+[apis](https://www.npmjs.com/package/googleapis),
+[express.js](https://expressjs.com/) and maybe a little bit of
+[templating](https://ejs.co/)
 
 <br />
 
