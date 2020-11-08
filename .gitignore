@@ -1,2 +1,6 @@
 # dependencies
 /node_modules
+
+# instance config
+/secrets/client_auth.json
+/secrets/client.json
