@@ -54,43 +54,61 @@ let compileTemplates = () => ({
 
 
 // ...
+async function sendEmail (recipient, subject, text, html) {
+
+    let
+        { token } = await gjwt.getAccessToken(),
+        transport = createTransport({
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true,
+            auth: {
+                type: "OAuth2",
+                user: client.user,
+                accessToken: token,
+            }
+        });
+
+    return await transport.sendMail({
+        from: client.from,
+        to: recipient,
+        subject,
+        text, html
+    });
+
+}
+
+
+
+
+// ...
 async function main () {
+
+    let
+        recipient = access(
+            config, ["domains", 0, 1, "to"],
+            "drmats <drmats@users.noreply.github.com>"
+        ),
+        t = compileTemplates();
 
     try {
 
         let
-            { token } = await gjwt.getAccessToken(),
-            transport = createTransport({
-                host: "smtp.gmail.com",
-                port: 465,
-                secure: true,
-                auth: {
-                    type: "OAuth2",
-                    user: client.user,
-                    accessToken: token,
-                }
-            }),
-            recipient = access(
-                config, ["domains", 0, 1, "to"],
-                "drmats <drmats@users.noreply.github.com>"
-            ),
-            t = compileTemplates(),
-            info = await transport.sendMail({
-                from: client.from,
-                to: recipient,
-                subject: t.subject({
+            info = await sendEmail(
+                recipient,
+                t.subject({
                     subject: `${(new Date).toISOString()} 🤘 Hi there! 🤘`
                 }),
-                text: t.text({ text: "Just... Hello :-)." }),
-                html: t.html({ html: "Just... Hello 😎." }),
-            });
+                t.text({ text: "Just... Hello :-)." }),
+                t.html({ html: "Just... Hello 😎." })
+            );
 
         console.log(info);
 
     } catch (ex) {
 
         console.error(access(
-            ex, ["response", "data", "error_description"], ex
+            ex, ["response", "data"], ex
         ));
 
     }
