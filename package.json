@@ -12,6 +12,7 @@
     "dependencies": {
         "@xcmats/js-toolbox": "^0.9.12",
         "googleapis": "^64.0.0",
+        "handlebars": "^4.7.6",
         "nodemailer": "^6.4.15"
     },
     "description": "A (very) small-scale transactional email service.",

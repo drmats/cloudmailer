@@ -4,3 +4,4 @@
 # instance config
 /secrets/client_auth.json
 /secrets/client.json
+/secrets/config.json

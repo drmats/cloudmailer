@@ -7,7 +7,9 @@ const
     { access } = require("@xcmats/js-toolbox/struct"),
     { google } = require("googleapis"),
     { createTransport } = require("nodemailer"),
-    client = require("../secrets/client.json")
+    hb = require("handlebars"),
+    client = require("../secrets/client.json"),
+    config = require("../secrets/config.json")
 
 
 
@@ -36,6 +38,22 @@ const gjwt = new google.auth.JWT({
 
 
 // ...
+let compileTemplates = () => ({
+    subject: hb.compile(
+        access(config, ["domains", 0, 1, "subject"], "{{subject}}")
+    ),
+    text: hb.compile(
+        access(config, ["domains", 0, 1, "text"], "{{text}}")
+    ),
+    html: hb.compile(
+        access(config, ["domains", 0, 1, "html"], "{{html}}")
+    ),
+})
+
+
+
+
+// ...
 async function main () {
 
     try {
@@ -52,12 +70,19 @@ async function main () {
                     accessToken: token,
                 }
             }),
+            recipient = access(
+                config, ["domains", 0, 1, "to"],
+                "drmats <drmats@users.noreply.github.com>"
+            ),
+            t = compileTemplates(),
             info = await transport.sendMail({
                 from: client.from,
-                to: "drmats <drmats@users.noreply.github.com>",
-                subject: "🤘 Hi there! 🤘",
-                text: "Just... Hello :-).",
-                html: "Just... Hello 😎.",
+                to: recipient,
+                subject: t.subject({
+                    subject: `${(new Date).toISOString()} 🤘 Hi there! 🤘`
+                }),
+                text: t.text({ text: "Just... Hello :-)." }),
+                html: t.html({ html: "Just... Hello 😎." }),
             });
 
         console.log(info)

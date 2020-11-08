@@ -27,7 +27,7 @@ domain and ... I happen to have
 a little bit of [google cloud](https://cloud.google.com/) + it's
 [apis](https://www.npmjs.com/package/googleapis),
 [express.js](https://expressjs.com/) and maybe a little bit of
-[templating](https://ejs.co/)
+[templating](https://handlebarsjs.com/)
 
 <br />
 
