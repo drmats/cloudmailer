@@ -61,10 +61,9 @@
         "url": "git+https://github.com/drmats/cloudmailer.git"
     },
     "scripts": {
-        "build": "cross-env BABEL_ENV=production webpack --config=webpack.config.prod.js",
-        "build:dev": "cross-env BABEL_ENV=development webpack --config=webpack.config.dev.js",
+        "build": "cross-env BABEL_ENV=production webpack --config=webpack.config.js",
         "build:types": "tsc --emitDeclarationOnly",
-        "contBuild": "nodemon -e js,ts --watch ./src/ --exec \"npm run build:dev\"",
+        "contBuild": "nodemon -e js,ts --watch ./src/ --exec \"npm run build\"",
         "clean": "rimraf ./dist",
         "clean:modules": "rimraf package-lock.json && rimraf node_modules",
         "lint": "echo \"Linting and typechecking...\" && eslint ./src/ --ext .js,.ts && npm run type-check",
