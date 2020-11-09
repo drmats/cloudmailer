@@ -8,6 +8,7 @@ const
     { google } = require("googleapis"),
     { createTransport } = require("nodemailer"),
     hb = require("handlebars"),
+
     client = require("../secrets/client.json"),
     config = require("../secrets/config.json");
 
@@ -17,15 +18,10 @@ const
 // ...
 function cloudmailer () {
 
-    // current directory (`__dirname` is not defined in REPL)
-    let curdir
-    try { curdir = __dirname }
-    catch (_) { curdir = path.resolve("."); }
-
     // JWT class used to authorize against google services
     // and obtain Access Token
     const gjwt = new google.auth.JWT({
-        keyFile: path.join(curdir, "../secrets/client_auth.json"),
+        keyFile: path.join(__dirname, "../secrets/client_auth.json"),
         scopes: [
             "https://mail.google.com/",
             "https://www.googleapis.com/auth/gmail.modify",
@@ -35,8 +31,9 @@ function cloudmailer () {
         subject: client.user,
     });
 
+
     // email sending logic
-    return async function send (recipient, subject, text, html) {
+    return async function send (...args) {
 
         let
             { token } = await gjwt.getAccessToken(),
@@ -50,12 +47,7 @@ function cloudmailer () {
                     accessToken: token,
                 }
             }),
-            response = await transport.sendMail({
-                from: client.from,
-                to: recipient,
-                subject,
-                text, html
-            });
+            response = await transport.sendMail(...args);
 
         transport.close();
 
@@ -93,21 +85,21 @@ async function main () {
             "drmats <drmats@users.noreply.github.com>"
         ),
         t = compileTemplates(),
-        sendEmail = cloudmailer();
+        mail = cloudmailer();
 
     try {
 
-        let
-            info = await sendEmail(
-                recipient,
-                t.subject({
+        console.log(
+            await mail({
+                from: client.from,
+                to: recipient,
+                subject: t.subject({
                     subject: `${(new Date).toISOString()} 🤘 Hi there! 🤘`
                 }),
-                t.text({ text: "Just... Hello :-)." }),
-                t.html({ html: "Just... Hello 😎." })
-            );
-
-        console.log(info);
+                text: t.text({ text: "Just... Hello :-)." }),
+                html: t.html({ html: "Just... Hello 😎." })
+            })
+        );
 
     } catch (ex) {
 
