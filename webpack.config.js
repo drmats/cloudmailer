@@ -44,7 +44,7 @@ module.exports = {
 
     output: {
         chunkFilename: "[name].c.js",
-        filename: "[name].js",
+        filename: "[name].bundle.js",
         globalObject: "this",
         libraryTarget: "commonjs",
         path: resolve(__dirname, "./dist"),
@@ -84,9 +84,8 @@ module.exports = {
             },
             {
                 test: /\.(js|ts)$/,
-                exclude: /node_modules/,
                 loader: "babel-loader",
-                sideEffects: true,
+                sideEffects: false,
             },
         ],
     },
