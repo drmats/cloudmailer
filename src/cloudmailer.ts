@@ -10,7 +10,11 @@
 
 import path from "path";
 import { google } from "googleapis";
-import { createTransport } from "nodemailer";
+import nodemailer, {
+    SendMailOptions,
+    SentMessageInfo,
+} from "nodemailer";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 import client from "../secrets/client.json";
 
@@ -18,7 +22,9 @@ import client from "../secrets/client.json";
 
 
 // ...
-export default function () {
+export default function ():
+    (mailOptions: SendMailOptions) => Promise<SentMessageInfo>
+{
 
     // JWT class used to authorize against google services
     // and obtain Access Token
@@ -35,21 +41,21 @@ export default function () {
 
 
     // email sending logic
-    return async (...args) => {
+    return async (mailOptions: SendMailOptions) => {
 
-        let
+        const
             { token } = await gjwt.getAccessToken(),
-            transport = createTransport({
+            transport = nodemailer.createTransport({
                 host: "smtp.gmail.com",
                 port: 465,
                 secure: true,
                 auth: {
                     type: "OAuth2",
                     user: client.user,
-                    accessToken: token,
+                    accessToken: token || "",
                 },
-            }),
-            response = await transport.sendMail(...args);
+            } as SMTPTransport.Options),
+            response = await transport.sendMail(mailOptions);
 
         transport.close();
 
