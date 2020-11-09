@@ -1,14 +1,25 @@
-// ...
+/**
+ * Cloudmailer.
+ *
+ * @module cloudmailer-app
+ * @license BSD-2-Clause
+ */
 
-"use strict";
 
-const
-    cloudmailer = require("./cloudmailer"),
-    { access } = require("@xcmats/js-toolbox/struct"),
-    hb = require("handlebars"),
 
-    client = require("../secrets/client.json"),
-    config = require("../secrets/config.json");
+
+import cloudmailer from "./cloudmailer";
+import { access } from "@xcmats/js-toolbox/struct";
+import hb from "handlebars";
+
+import client from "../secrets/client.json";
+import config from "../secrets/config.json";
+
+
+
+
+// eslint-disable-next-line no-console
+const logger = console;
 
 
 
@@ -30,7 +41,7 @@ let compileTemplates = () => ({
 
 
 // ...
-async function main () {
+export const main = async () => {
 
     let
         recipient = access(
@@ -42,34 +53,32 @@ async function main () {
 
     try {
 
-        console.log(
+        logger.info(
             await mail({
                 from: client.from,
                 to: recipient,
                 subject: t.subject({
-                    subject: `${(new Date).toISOString()} 🤘 Hi there! 🤘`
+                    subject: `${(new Date).toISOString()} 🤘 Hi there! 🤘`,
                 }),
                 text: t.text({ text: "Just... Hello :-)." }),
-                html: t.html({ html: "Just... Hello 😎." })
+                html: t.html({ html: "Just... Hello 😎." }),
             })
         );
 
     } catch (ex) {
 
-        console.error(access(
+        logger.error(access(
             ex, ["response", "data"], ex
         ));
 
     }
 
-}
+};
 
 
 
 
 // ...
 if (module === require.main) {
-    main().catch(console.error);
+    main().catch(logger.error);
 }
-
-module.exports = main;

@@ -1,19 +1,24 @@
+/**
+ * Cloudmailer.
+ *
+ * @module cloudmailer
+ * @license BSD-2-Clause
+ */
+
+
+
+
+import path from "path";
+import { google } from "googleapis";
+import { createTransport } from "nodemailer";
+
+import client from "../secrets/client.json";
+
+
+
+
 // ...
-
-"use strict";
-
-const
-    path = require("path"),
-    { google } = require("googleapis"),
-    { createTransport } = require("nodemailer"),
-
-    client = require("../secrets/client.json");
-
-
-
-
-// ...
-function cloudmailer () {
+export default function () {
 
     // JWT class used to authorize against google services
     // and obtain Access Token
@@ -30,7 +35,7 @@ function cloudmailer () {
 
 
     // email sending logic
-    return async function send (...args) {
+    return async (...args) => {
 
         let
             { token } = await gjwt.getAccessToken(),
@@ -42,7 +47,7 @@ function cloudmailer () {
                     type: "OAuth2",
                     user: client.user,
                     accessToken: token,
-                }
+                },
             }),
             response = await transport.sendMail(...args);
 
@@ -50,12 +55,6 @@ function cloudmailer () {
 
         return response;
 
-    }
+    };
 
 }
-
-
-
-
-// ...
-module.exports = cloudmailer;
