@@ -50,7 +50,7 @@ export default async function sendMail (req, res, next) {
             });
 
         // respond
-        res.status(200).send({ ...info });
+        res.status(202).send({ ...info });
 
     } catch (ex) {
 
