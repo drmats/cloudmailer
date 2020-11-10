@@ -9,6 +9,7 @@
 
 
 
+import path from "path";
 import http from "http";
 import express, {
     json,
@@ -25,6 +26,7 @@ import {
     useMemory,
     share,
 } from "./lib/memory";
+import { readJSON } from "./lib/utils";
 import configureCatchAll from "./config/catchall";
 import configureHeaders from "./config/headers";
 import configureLogging from "./config/logging";
@@ -35,13 +37,11 @@ import cloudmailer from "./lib/cloudmailer";
 import { port } from "./config/server.json";
 import { version } from "../package.json";
 
-import config from "../secrets/config.json";
-
 
 
 
 // ...
-let compileTemplates = () => ({
+let compileTemplates = (config) => ({
     subject: hb.compile(
         access(config, ["domains", 0, 1, "subject"], "{{subject}}")
     ),
@@ -64,6 +64,16 @@ run(async () => {
         // shared application objects
         ctx = useMemory(),
 
+        // ...
+        secrets = {
+            client: await readJSON(
+                path.join(process.cwd(), "./secrets/client.json")
+            ),
+            config: await readJSON(
+                path.join(process.cwd(), "./secrets/config.json")
+            ),
+        },
+
         // express application
         app = express(),
 
@@ -71,14 +81,14 @@ run(async () => {
         server = http.createServer(app),
 
         // ...
-        templates = compileTemplates(),
+        templates = compileTemplates(secrets.config),
 
         // preconfigured mail-sending function
-        mail = await cloudmailer();
+        mail = await cloudmailer(secrets.client.user);
 
 
     // share application-specific variables
-    share({ app, server, templates, mail });
+    share({ secrets, app, server, templates, mail });
 
 
     // expose shared memory as a global variable (for remote-debugging)

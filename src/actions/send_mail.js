@@ -12,9 +12,6 @@
 import { access } from "@xcmats/js-toolbox/struct";
 import { useMemory } from "../lib/memory";
 
-import client from "../../secrets/client.json";
-import config from "../../secrets/config.json";
-
 
 
 
@@ -26,7 +23,7 @@ import config from "../../secrets/config.json";
 export default async function sendMail (req, res, next) {
 
     // shared application objects
-    const { mail, templates } = useMemory();
+    const { secrets, mail, templates } = useMemory();
 
     let { replyTo, subject, text } = req.body;
 
@@ -37,12 +34,12 @@ export default async function sendMail (req, res, next) {
 
         let
             recipient = access(
-                config, ["domains", 0, 1, "to"],
+                secrets.config, ["domains", 0, 1, "to"],
                 "drmats <drmats@users.noreply.github.com>"
             ),
 
             info = await mail({
-                from: client.from,
+                from: secrets.client.from,
                 to: recipient,
                 replyTo,
                 subject: templates.subject({
