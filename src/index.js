@@ -30,7 +30,7 @@ import configureHeaders from "./config/headers";
 import configureLogging from "./config/logging";
 import configureRedirects from "./config/redirects";
 import configureRoutes from "./config/routes";
-import cloudmailer from "./cloudmailer";
+import cloudmailer from "./lib/cloudmailer";
 
 import { port } from "./config/server.json";
 import { version } from "../package.json";

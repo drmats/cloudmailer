@@ -17,7 +17,7 @@ import nodemailer, {
 } from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
-import client from "../secrets/client.json";
+import client from "../../secrets/client.json";
 
 
 
@@ -30,7 +30,7 @@ export default function ():
     // JWT class used to authorize against google services
     // and obtain Access Token
     const gjwt = new google.auth.JWT({
-        keyFile: path.join(__dirname, "../secrets/client_auth.json"),
+        keyFile: path.join(process.cwd(), "./secrets/client_auth.json"),
         scopes: [
             "https://mail.google.com/",
             "https://www.googleapis.com/auth/gmail.modify",
