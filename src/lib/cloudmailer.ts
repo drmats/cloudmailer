@@ -16,29 +16,34 @@ import nodemailer, {
     SentMessageInfo,
 } from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
-
-import client from "../../secrets/client.json";
-
+import { readJSON } from "../lib/utils";
 
 
 
 // ...
-export default function ():
-    (mailOptions: SendMailOptions) => Promise<SentMessageInfo>
+export default async function ():
+    Promise<(mailOptions: SendMailOptions) => Promise<SentMessageInfo>>
 {
 
-    // JWT class used to authorize against google services
-    // and obtain Access Token
-    const gjwt = new google.auth.JWT({
-        keyFile: path.join(process.cwd(), "./secrets/client_auth.json"),
-        scopes: [
-            "https://mail.google.com/",
-            "https://www.googleapis.com/auth/gmail.modify",
-            "https://www.googleapis.com/auth/gmail.compose",
-            "https://www.googleapis.com/auth/gmail.send",
-        ],
-        subject: client.user,
-    });
+    const
+
+        // client information
+        client = await readJSON(
+            path.join(process.cwd(), "./secrets/client.json")
+        ),
+
+        // JWT class used to authorize against google services
+        // and obtain Access Token
+        gjwt = new google.auth.JWT({
+            keyFile: path.join(process.cwd(), "./secrets/client_auth.json"),
+            scopes: [
+                "https://mail.google.com/",
+                "https://www.googleapis.com/auth/gmail.modify",
+                "https://www.googleapis.com/auth/gmail.compose",
+                "https://www.googleapis.com/auth/gmail.send",
+            ],
+            subject: client.user as string,
+        });
 
 
     // email sending logic

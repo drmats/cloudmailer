@@ -74,7 +74,7 @@ run(async () => {
         templates = compileTemplates(),
 
         // preconfigured mail-sending function
-        mail = cloudmailer();
+        mail = await cloudmailer();
 
 
     // share application-specific variables
