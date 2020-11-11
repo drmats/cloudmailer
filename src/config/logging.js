@@ -40,10 +40,7 @@ export default function configureLogging () {
                 console.error(...text.map(txt => chalk.red(txt))),
             warn: (...text) =>
                 // eslint-disable-next-line no-console
-                console.warn(...[
-                    "[🛴️]",
-                    ...text.map(txt => chalk.yellow(txt)),
-                ]),
+                console.warn(...text.map(txt => chalk.yellow(txt))),
             info: (...text) =>
                 // eslint-disable-next-line no-console
                 console.info(...[
