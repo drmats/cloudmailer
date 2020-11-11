@@ -34,8 +34,6 @@ var conf = {
 // configuration
 module.exports = function (api) {
     api.cache.using(() => process.env.BABEL_ENV);
-    // eslint-disable-next-line no-console
-    console.log(`Compiling for '${api.env()}' ...`);
 
     return {
 

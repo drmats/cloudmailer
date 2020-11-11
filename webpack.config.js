@@ -9,6 +9,7 @@ const
     { resolve } = require("path"),
     webpack = require("webpack"),
     MinifyPlugin = require("terser-webpack-plugin"),
+    ESLintPlugin = require("eslint-webpack-plugin"),
     nodeExternals = require("webpack-node-externals"),
     appDirectory = realpathSync(process.cwd());
 
@@ -77,12 +78,6 @@ module.exports = {
     module: {
         rules: [
             {
-                enforce: "pre",
-                test: /\.(js|ts)$/,
-                exclude: /node_modules/,
-                loader: "eslint-loader",
-            },
-            {
                 test: /\.(js|ts)$/,
                 loader: "babel-loader",
                 sideEffects: false,
@@ -100,6 +95,9 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             "process.env.BABEL_ENV": JSON.stringify("production"),
+        }),
+        new ESLintPlugin({
+            context: "src",
         }),
     ],
 
