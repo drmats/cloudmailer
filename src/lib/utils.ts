@@ -17,6 +17,7 @@ import { promises } from "fs";
 /**
  * Read file and parse it as a JSON object.
  *
+ * @function readJSON
  * @param path file
  * @returns parsed object
  */

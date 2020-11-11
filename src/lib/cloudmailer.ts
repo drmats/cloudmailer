@@ -21,8 +21,14 @@ import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 /**
  * Create email-sending function.
+ *
+ * @function cloudmailer
+ * @param options { user - oauth2, keyFile - path to service account json }
+ * @returns configured email-sending function
  */
-export default function ({ user, keyFile }: { user: string, keyFile: string }):
+export default function cloudmailer (
+    { user, keyFile }: { user: string, keyFile: string }
+):
     (mailOptions: SendMailOptions) => Promise<SentMessageInfo>
 {
 
