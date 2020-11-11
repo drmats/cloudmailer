@@ -9,7 +9,7 @@
 
 
 
-import { devEnv } from "@xcmats/js-toolbox/utils";
+import { Request, Response, NextFunction } from "express";
 import {
     name as applicationName,
     version,
@@ -23,10 +23,12 @@ import {
  *
  * @function hello
  */
-export default function hello (req, res, next) {
+export default function hello (
+    req: Request, res: Response, next: NextFunction
+): void {
 
     // default response data
-    let responseData = {
+    const responseData = {
         message: "hello",
         app: applicationName,
         version,
@@ -37,10 +39,6 @@ export default function hello (req, res, next) {
             headers: req.headers,
         },
     };
-
-    if (devEnv()) {
-        global.lastRequest = req;
-    }
 
     res.status(200).send(responseData);
 
