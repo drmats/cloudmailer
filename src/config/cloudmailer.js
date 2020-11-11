@@ -45,7 +45,7 @@ export default async function configureCloudmailer () {
 
     const
 
-        // ...
+        // e-mail client and domain configuration files
         secrets = {
             client: await readJSON(
                 path.join(process.cwd(), "./secrets/client.json")
@@ -56,10 +56,13 @@ export default async function configureCloudmailer () {
         },
 
         // preconfigured mail-sending function
-        mail = await cloudmailer(secrets.client.user);
+        mail = cloudmailer({
+            user: secrets.client.user,
+            keyFile: path.join(process.cwd(), "./secrets/client_auth.json"),
+        });
 
 
-    // ...
+    // allowed origins dictionary
     secrets.origins = compileOrigins(secrets.config.domains);
 
 
