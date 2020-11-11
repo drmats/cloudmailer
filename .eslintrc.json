@@ -1,5 +1,4 @@
 {
-
     "env": {
         "commonjs": true,
         "es6": true,
@@ -64,9 +63,9 @@
             ],
             "rules": {
                 "semi": ["error", "always"],
-                "@typescript-eslint/interface-name-prefix": "off"
+                "@typescript-eslint/interface-name-prefix": "off",
+                "prefer-const": "off"
             }
         }
     ]
-
 }
