@@ -126,9 +126,9 @@ run(async () => {
 
     // listen and respond to requests
     server.listen(
-        port,
+        port, "0.0.0.0",
         () => ctx.logger.info(
-            `cloudmailer::${chalk.yellow(port)}`,
+            `cloudmailer:${chalk.yellow(port)}`,
             `(${chalk.blueBright("v." + version)})`
         )
     );
