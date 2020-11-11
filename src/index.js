@@ -16,7 +16,6 @@ import express, {
     urlencoded,
 } from "express";
 import chalk from "chalk";
-import { access } from "@xcmats/js-toolbox/struct";
 import {
     devEnv,
     run,
@@ -41,17 +40,18 @@ import { version } from "../package.json";
 
 
 // ...
-let compileTemplates = (config) => ({
-    subject: hb.compile(
-        access(config, ["domains", 0, 1, "subject"], "{{subject}}")
-    ),
-    text: hb.compile(
-        access(config, ["domains", 0, 1, "text"], "{{text}}")
-    ),
-    html: hb.compile(
-        access(config, ["domains", 0, 1, "html"], "{{html}}")
-    ),
-});
+let compileOrigins = (domains) => {
+    const fields = ["subject", "text", "html"];
+    let origins = {};
+    for (let [name, config] of domains) {
+        let domain = { to: config.to };
+        for (let f of fields) {
+            domain[f] = hb.compile(config[f] || `{{${f}}}`);
+        }
+        origins[name] = domain;
+    }
+    return origins;
+};
 
 
 
@@ -80,15 +80,16 @@ run(async () => {
         // node's http server
         server = http.createServer(app),
 
-        // ...
-        templates = compileTemplates(secrets.config),
-
         // preconfigured mail-sending function
         mail = await cloudmailer(secrets.client.user);
 
 
     // share application-specific variables
-    share({ secrets, app, server, templates, mail });
+    share({ secrets, app, server, mail });
+
+
+    // ...
+    secrets.origins = compileOrigins(secrets.config.domains);
 
 
     // expose shared memory as a global variable (for remote-debugging)

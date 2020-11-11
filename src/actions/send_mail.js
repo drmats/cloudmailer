@@ -11,6 +11,7 @@
 
 import { access } from "@xcmats/js-toolbox/struct";
 import { useMemory } from "../lib/memory";
+import { parse } from "url";
 
 
 
@@ -23,40 +24,44 @@ import { useMemory } from "../lib/memory";
 export default async function sendMail (req, res, next) {
 
     // shared application objects
-    const { secrets, mail, templates } = useMemory();
-
-    let { replyTo, subject, text } = req.body;
+    const { secrets, mail } = useMemory();
 
     try {
+
+        let
+            { replyTo, subject, text } = req.body,
+            { origin } = req.headers,
+            hostname = parse(origin).hostname;
 
         // sanitize
         replyTo = replyTo.normalize("NFKC").trim().toLowerCase();
 
         let
-            recipient = access(
-                secrets.config, ["domains", 0, 1, "to"],
-                "drmats <drmats@users.noreply.github.com>"
-            ),
+            config = secrets.origins[hostname],
 
             info = await mail({
                 from: secrets.client.from,
-                to: recipient,
+                to: config.to,
                 replyTo,
-                subject: templates.subject({
+                subject: config.subject({
                     subject: `${(new Date).toISOString()} ${subject}`,
                 }),
-                text: templates.text({ text }),
-                html: templates.html({ html: text }),
+                text: config.text({ text }),
+                html: config.html({ html: text }),
             });
 
         // respond
         res.status(202).send({ ...info });
 
-    } catch (ex) {
+    } catch (e) {
 
-        res.status(404).send(access(
-            ex, ["response", "data"], ex
-        ));
+        if (e instanceof TypeError) {
+            res.status(400).send({ error: e.message });
+        } else {
+            res.status(404).send(access(
+                e, ["response", "data"], Object.keys(e)
+            ));
+        }
 
     }
 
