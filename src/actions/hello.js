@@ -9,6 +9,7 @@
 
 
 
+import { devEnv } from "@xcmats/js-toolbox/utils";
 import {
     name as applicationName,
     version,
@@ -33,8 +34,13 @@ export default function hello (req, res, next) {
             ua: req.get("user-agent"),
             ip: req.ip,
             host: req.hostname,
+            headers: req.headers,
         },
     };
+
+    if (devEnv()) {
+        global.lastRequest = req;
+    }
 
     res.status(200).send(responseData);
 
