@@ -28,7 +28,9 @@ a little bit of [google cloud](https://cloud.google.com/) + it's
 [apis](https://www.npmjs.com/package/googleapis),
 [express.js](https://expressjs.com/) and maybe a little bit of
 [templating](https://handlebarsjs.com/).
-(Almost) all in [typescript](https://www.typescriptlang.org/).
+(Almost) all in [typescript](https://www.typescriptlang.org/) with a help
+from [babel](https://babeljs.io/), [webpack](https://webpack.js.org/)
+and [eslint](https://eslint.org/).
 
 <br />
 
