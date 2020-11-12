@@ -62,9 +62,10 @@
                 "@typescript-eslint"
             ],
             "rules": {
-                "semi": ["error", "always"],
                 "@typescript-eslint/interface-name-prefix": "off",
-                "prefer-const": "off"
+                "@typescript-eslint/no-unused-vars": ["warn", {"args": "all", "argsIgnorePattern": "^_"}],
+                "prefer-const": "off",
+                "semi": ["error", "always"]
             }
         }
     ]
