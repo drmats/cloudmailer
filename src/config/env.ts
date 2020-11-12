@@ -34,3 +34,19 @@ export const apiRoot = `${rootPath}api`;
  * @constant {String} apiV1 Where to send all queries?
  */
 export const apiV1 = `${apiRoot}/v1`;
+
+
+
+
+/**
+ * @constant {Number} maxSubjectLength Maximum length of e-mail subject.
+ */
+export const maxSubjectLength = 128;
+
+
+
+
+/**
+ * @constant {Number} maxBodyLength Maximum length of e-mail body text.
+ */
+export const maxBodyLength = 65536;

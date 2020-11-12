@@ -73,6 +73,7 @@ run(async () => {
     // set up cloudmailer
     await configureCloudmailer();
 
+
     // set up CORS
     configureHeaders();
 

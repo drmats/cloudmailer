@@ -13,6 +13,10 @@ import { Request, Response, NextFunction } from "express";
 import { SendMailOptions } from "nodemailer";
 import { access } from "@xcmats/js-toolbox/struct";
 import { useMemory } from "../lib/memory";
+import {
+    maxBodyLength,
+    maxSubjectLength
+} from "../config/env";
 
 
 
@@ -49,11 +53,11 @@ export default async function sendMail (
 
         // check and sanitize subject
         if (!subject) return badRequest("no subject");
-        subject = subject.substr(0, 128);
+        subject = subject.substr(0, maxSubjectLength);
 
         // check and sanitize text (email body)
         if (!text) return badRequest("no text");
-        text = subject.substr(0, 65536);
+        text = text.substr(0, maxBodyLength);
 
         // basic mail options
         mailOptions = {
