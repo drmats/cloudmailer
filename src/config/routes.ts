@@ -20,7 +20,7 @@ import sendMail from "../actions/send_mail";
 /**
  * Routes configuration.
  */
-export default function configureRoutes () {
+export default function configureRoutes (): void {
 
     // shared application objects
     const { app } = useMemory();

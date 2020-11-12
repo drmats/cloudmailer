@@ -9,6 +9,7 @@
 
 
 
+import { Request, Response, NextFunction } from "express";
 import { useMemory } from "../lib/memory";
 import {
     name as applicationName,
@@ -21,13 +22,13 @@ import {
 /**
  * Headers configuration.
  */
-export default async function configureHeaders () {
+export default function configureHeaders (): void {
 
     // shared application objects
     const { app } = useMemory();
 
 
-    app.use((req, res, next) => {
+    app.use((req: Request, res: Response, next: NextFunction) => {
         if (req.method === "OPTIONS") {
             res.header({ "Access-Control-Max-Age": 1209600 });
         }
@@ -56,7 +57,7 @@ export default async function configureHeaders () {
             ].join(", "),
             "X-Powered-By": `${applicationName}/${version}`,
         });
-        next();
+        return next();
     });
 
 }
