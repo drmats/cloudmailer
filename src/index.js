@@ -24,6 +24,7 @@ import {
     share,
 } from "./lib/memory";
 
+import configureAuth from "./config/auth";
 import configureCatchAll from "./config/catchall";
 import configureCloudmailer from "./config/cloudmailer";
 import configureHeaders from "./config/headers";
@@ -74,6 +75,10 @@ run(async () => {
 
     // set up CORS
     configureHeaders();
+
+
+    // auth (origin-check) mechanism
+    configureAuth();
 
 
     // redirects

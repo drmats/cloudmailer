@@ -23,10 +23,10 @@ import sendMail from "../actions/send_mail";
 export default function configureRoutes (): void {
 
     // shared application objects
-    const { app } = useMemory();
+    const { app, authOriginMw } = useMemory();
 
 
     // send e-mail
-    app.post(`${apiV1}/send/`, sendMail);
+    app.post(`${apiV1}/send/`, authOriginMw, sendMail);
 
 }
