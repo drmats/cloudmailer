@@ -90,7 +90,7 @@ export default function configureLogging (): void {
 
         } else {
 
-            logger.err(error.toString());
+            res.status(500).send({ error: error.toString() });
 
             logger.info(
                 chalk.red(req.ip),
@@ -98,7 +98,7 @@ export default function configureLogging (): void {
                 chalk.red(500), chalk.red("!")
             );
 
-            res.status(500).send({ error: error.toString() });
+            logger.err(error.toString());
 
         }
 
