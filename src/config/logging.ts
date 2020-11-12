@@ -9,6 +9,7 @@
 
 
 
+import { Errback, Request, Response, NextFunction } from "express";
 import chalk from "chalk";
 import {
     useMemory,
@@ -21,7 +22,7 @@ import {
 /**
  * Logging configuration.
  */
-export default function configureLogging () {
+export default function configureLogging (): void {
 
     const
 
@@ -32,16 +33,16 @@ export default function configureLogging () {
         logger = {
             // eslint-disable-next-line no-console
             ...console,
-            ok: (...text) =>
+            ok: (...text: unknown[]) =>
                 // eslint-disable-next-line no-console
                 console.info(...text.map(txt => chalk.green(txt))),
-            err: (...text) =>
+            err: (...text: unknown[]) =>
                 // eslint-disable-next-line no-console
                 console.error(...text.map(txt => chalk.red(txt))),
-            warn: (...text) =>
+            warn: (...text: unknown[]) =>
                 // eslint-disable-next-line no-console
                 console.warn(...text.map(txt => chalk.yellow(txt))),
-            info: (...text) =>
+            info: (...text: unknown[]) =>
                 // eslint-disable-next-line no-console
                 console.info(...[
                     chalk.gray((new Date()).toISOString()), ...text,
@@ -54,7 +55,7 @@ export default function configureLogging () {
 
 
     // simple request logger
-    app.use((req, res, next) => {
+    app.use((req: Request, res: Response, next: NextFunction) => {
 
         // don't log successful cors preflight checks
         if (req.method !== "OPTIONS"  ||  res.statusCode !== 204) {
@@ -75,7 +76,9 @@ export default function configureLogging () {
 
 
     // simple error handler/logger
-    app.use((error, req, res, _next) => {
+    app.use((
+        error: Errback, req: Request, res: Response, _next: NextFunction
+    ) => {
 
         if (res.headersSent) {
 
