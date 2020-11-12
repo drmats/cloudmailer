@@ -27,16 +27,27 @@ type Domain = [string, Record<string, string>];
 
 
 /**
+ * Single origin configuration.
+ */
+interface Origin {
+    to: string;
+    templates: Record<string, hb.TemplateDelegate>;
+}
+
+
+
+
+/**
  * Enumerate over `domains` array and compute dictionary of form:
  * <allowed-origin: { origin configuration }>.
  */
 let compileOrigins = (domains: Domain[]) => {
     const fields = ["subject", "text", "html"];
-    let origins: Record<string, Record<string, unknown>> = {};
+    let origins: Record<string, Origin> = {};
     for (let [name, config] of domains) {
-        let domain: Record<string, unknown> = { to: config.to };
+        let domain: Origin = { to: config.to, templates: {} };
         for (let f of fields) {
-            domain[f] = hb.compile(config[f] || `{{${f}}}`);
+            domain.templates[f] = hb.compile(config[f] || `{{${f}}}`);
         }
         origins[name] = domain;
     }

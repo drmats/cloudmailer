@@ -68,11 +68,9 @@ export default async function sendMail (
         mailOptions = {
             from: secrets.client.from,
             to: config.to,
-            subject: config.subject({
-                subject: `${(new Date).toISOString()} ${subject}`,
-            }),
-            text: config.text({ text }),
-            html: config.html({ html: text }),
+            subject: config.templates.subject({ subject }),
+            text: config.templates.text({ text }),
+            html: config.templates.html({ html: text }),
         };
 
         // sanitize replyTo e-mail address and add to mailOptions if present
