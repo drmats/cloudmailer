@@ -27,7 +27,35 @@ domain and ... I happen to have
 a little bit of [google cloud](https://cloud.google.com/) + it's
 [apis](https://www.npmjs.com/package/googleapis),
 [express.js](https://expressjs.com/) and maybe a little bit of
-[templating](https://handlebarsjs.com/)
+[templating](https://handlebarsjs.com/).
+(Almost) all in [typescript](https://www.typescriptlang.org/).
+
+<br />
+
+
+
+
+## how?
+
+* clone repo and install dependencies
+    ```bash
+    $ git clone ...
+    $ cd cloudmailer
+    $ npm i
+    ```
+
+* create config files in [secrets](./secrets/)
+
+* build and run
+    ```bash
+    $ npm run build
+    $ npm start
+    ```
+
+* (optional) want to tinker yourself?
+    ```bash
+    $ npm run dev
+    ```
 
 <br />
 
