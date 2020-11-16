@@ -10,6 +10,12 @@
 
 
 
+// in ff's about:config:
+// security.mixed_content.block_active_content = false
+
+
+
+
 // try it in a browser's dev. tools console
 await (
     await fetch("http://localhost:8080/cloudmailer/api/v1/send/", {
