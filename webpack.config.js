@@ -39,7 +39,7 @@ module.exports = {
 
 
     entry: {
-        "cloudmailer": resolve(appDirectory, "src/index.js"),
+        "cloudmailer": resolve(appDirectory, "src/index.ts"),
     },
 
 
