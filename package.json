@@ -70,7 +70,7 @@
         "build:continuous": "nodemon -e js,ts --watch ./src/ --exec \"npm run build\"",
         "clean": "rimraf ./dist",
         "clean:modules": "rimraf package-lock.json && rimraf node_modules",
-        "dev": "rimraf ./node_modules/.cache/@babel && nodemon -e js,ts --watch ./src/ ./src/index.js --exec \"cross-env NODE_ENV=development BABEL_ENV=development babel-node --extensions \".js,.ts\" --ignore ./node_modules --inspect\"",
+        "dev": "rimraf ./node_modules/.cache/@babel && nodemon -e js,ts --watch ./src/ ./src/index.ts --exec \"cross-env NODE_ENV=development BABEL_ENV=development babel-node --extensions \".js,.ts\" --ignore ./node_modules --inspect\"",
         "lint": "echo \"Linting and typechecking...\" && eslint ./src/ --ext .js,.ts && npm run type-check",
         "start": "node ./dist/cloudmailer.bundle.js",
         "test": "npm run lint && echo \"Warning: no tests specified (yet)\"",

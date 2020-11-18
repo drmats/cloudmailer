@@ -38,13 +38,44 @@ import { version } from "../package.json";
 
 
 
+/**
+ * Interface extensions and custom type definitions.
+ */
+/* eslint-disable @typescript-eslint/no-namespace */
+declare global {
+
+    // app-specific NodeJS namespace declaration merging
+    namespace NodeJS {
+
+        // global object type extension
+        interface Global {
+            ctx?: Record<string, unknown>;
+        }
+
+    }
+
+    // app-specific Express namespace declaration merging
+    namespace Express {
+
+        // request object type extension
+        interface Request {
+            xhostname?: string;
+        }
+
+    }
+
+}
+
+
+
+
 // async enclosure to run the logic - application main entry point
 run(async () => {
 
     const
 
         // shared application objects
-        ctx = useMemory(),
+        ctx: Record<string, unknown> = useMemory(),
 
         // express application
         app = express(),
@@ -101,7 +132,7 @@ run(async () => {
     // listen and respond to requests
     server.listen(
         port, "0.0.0.0",
-        () => ctx.logger.info(
+        () => (ctx as { logger: Console }).logger.info(
             `cloudmailer:${chalk.yellow(port)}`,
             `(${chalk.blueBright("v." + version)})`
         )
