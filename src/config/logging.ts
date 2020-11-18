@@ -9,7 +9,13 @@
 
 
 
-import { Errback, Request, Response, NextFunction } from "express";
+import {
+    Errback,
+    Express,
+    Request,
+    Response,
+    NextFunction,
+} from "express";
 import chalk from "chalk";
 import {
     useMemory,
@@ -27,7 +33,7 @@ export default function configureLogging (): void {
     const
 
         // shared application objects
-        { app } = useMemory(),
+        { app } = useMemory<{ app: Express }>(),
 
         // console logger
         logger = {

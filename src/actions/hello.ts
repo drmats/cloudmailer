@@ -9,7 +9,11 @@
 
 
 
-import { Request, Response, NextFunction } from "express";
+import {
+    Request,
+    Response,
+    NextFunction,
+} from "express";
 import {
     name as applicationName,
     version,

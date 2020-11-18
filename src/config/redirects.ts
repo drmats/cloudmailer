@@ -9,7 +9,12 @@
 
 
 
-import { Request, Response, NextFunction } from "express";
+import {
+    Express,
+    Request,
+    Response,
+    NextFunction,
+} from "express";
 import { useMemory } from "@xcmats/js-toolbox/memory";
 import {
     rootPath,
@@ -28,7 +33,7 @@ import hello from "../actions/hello";
 export default function configureRedirects (): void {
 
     // shared application objects
-    const { app } = useMemory();
+    const { app } = useMemory<{ app: Express }>();
 
 
     // in case `rootPath` is not a `/` (no-proxy redirect)

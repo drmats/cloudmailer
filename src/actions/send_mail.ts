@@ -9,7 +9,11 @@
 
 
 
-import { Request, Response, NextFunction } from "express";
+import {
+    Request,
+    Response,
+    NextFunction,
+} from "express";
 import { SendMailOptions } from "nodemailer";
 import { access } from "@xcmats/js-toolbox/struct";
 import { useMemory } from "@xcmats/js-toolbox/memory";

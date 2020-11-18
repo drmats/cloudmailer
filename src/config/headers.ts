@@ -9,7 +9,12 @@
 
 
 
-import { Request, Response, NextFunction } from "express";
+import {
+    Express,
+    Request,
+    Response,
+    NextFunction,
+} from "express";
 import { useMemory } from "@xcmats/js-toolbox/memory";
 import {
     name as applicationName,
@@ -25,7 +30,7 @@ import {
 export default function configureHeaders (): void {
 
     // shared application objects
-    const { app } = useMemory();
+    const { app } = useMemory<{ app: Express }>();
 
 
     app.use((req: Request, res: Response, next: NextFunction) => {
