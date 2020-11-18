@@ -11,7 +11,7 @@
 
 import path from "path";
 import hb from "handlebars";
-import { share } from "../lib/memory";
+import { share } from "@xcmats/js-toolbox/memory";
 import cloudmailer from "../lib/cloudmailer";
 import { readJSON } from "../lib/utils";
 

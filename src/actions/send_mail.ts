@@ -12,7 +12,7 @@
 import { Request, Response, NextFunction } from "express";
 import { SendMailOptions } from "nodemailer";
 import { access } from "@xcmats/js-toolbox/struct";
-import { useMemory } from "../lib/memory";
+import { useMemory } from "@xcmats/js-toolbox/memory";
 import {
     maxBodyLength,
     maxSubjectLength

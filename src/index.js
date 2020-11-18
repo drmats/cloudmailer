@@ -22,7 +22,7 @@ import {
 import {
     useMemory,
     share,
-} from "./lib/memory";
+} from "@xcmats/js-toolbox/memory";
 
 import configureAuth from "./config/auth";
 import configureCatchAll from "./config/catchall";

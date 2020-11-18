@@ -10,7 +10,7 @@
 
 
 import { Request, Response, NextFunction } from "express";
-import { useMemory } from "../lib/memory";
+import { useMemory } from "@xcmats/js-toolbox/memory";
 import {
     rootPath,
     apiRoot,

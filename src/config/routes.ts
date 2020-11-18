@@ -9,7 +9,7 @@
 
 
 
-import { useMemory } from "../lib/memory";
+import { useMemory } from "@xcmats/js-toolbox/memory";
 import { apiV1 } from "./env";
 
 import sendMail from "../actions/send_mail";

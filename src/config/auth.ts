@@ -14,7 +14,7 @@ import { parse } from "url";
 import {
     share,
     useMemory,
-} from "../lib/memory";
+} from "@xcmats/js-toolbox/memory";
 
 
 

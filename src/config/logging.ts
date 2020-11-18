@@ -14,7 +14,7 @@ import chalk from "chalk";
 import {
     useMemory,
     share,
-} from "../lib/memory";
+} from "@xcmats/js-toolbox/memory";
 
 
 

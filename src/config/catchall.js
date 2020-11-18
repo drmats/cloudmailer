@@ -14,7 +14,7 @@ import { isArray } from "@xcmats/js-toolbox/type";
 import {
     useMemory,
     share,
-} from "../lib/memory";
+} from "@xcmats/js-toolbox/memory";
 import { parse } from "url";
 
 
