@@ -4,29 +4,43 @@
 
 
 // ...
-var conf = {
-    presets: [
-        [
-            "@babel/preset-env",
-            {
-                modules: "commonjs",
-                shippedProposals: true,
-                targets: {
-                    node: true,
+var
+
+    runtimeVersion = require(
+        "./package.json"
+    ).dependencies["@babel/runtime-corejs3"],
+
+    conf = {
+        plugins: [
+            "@babel/plugin-proposal-class-properties",
+            [
+                "@babel/plugin-transform-runtime",
+                {
+                    absoluteRuntime: false,
+                    helpers: true,
+                    corejs: 3,
+                    version: runtimeVersion,
                 },
-            },
+            ],
         ],
-        [
-            "@babel/preset-typescript",
+        presets: [
+            [
+                "@babel/preset-env",
+                {
+                    modules: "commonjs",
+                    useBuiltIns: false,
+                    targets: {
+                        node: "12.0.0",
+                    },
+                },
+            ],
+            [
+                "@babel/preset-typescript",
+            ],
         ],
-    ],
-    plugins: [
-        "@babel/plugin-proposal-class-properties",
-        "@babel/plugin-transform-runtime",
-    ],
-    comments: false,
-    shouldPrintComment: () => false,
-};
+        comments: false,
+        shouldPrintComment: () => false,
+    };
 
 
 
