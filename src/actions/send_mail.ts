@@ -9,12 +9,8 @@
 
 
 
-import {
-    Request,
-    Response,
-    NextFunction,
-} from "express";
-import { SendMailOptions } from "nodemailer";
+import type { RequestHandler } from "express";
+import type { SendMailOptions } from "nodemailer";
 import { useMemory } from "../index";
 import {
     maxBodyLength,
@@ -27,11 +23,9 @@ import {
 /**
  * Send email.
  *
- * @function send
+ * @function sendMail
  */
-export default async function sendMail (
-    req: Request, res: Response, next: NextFunction
-): Promise<void> {
+export const sendMail: RequestHandler = async (req, res, next) => {
 
     if (!req.xhostname) {
         return next(new Error("bad route auth config"));
@@ -93,4 +87,4 @@ export default async function sendMail (
 
     return next();
 
-}
+};

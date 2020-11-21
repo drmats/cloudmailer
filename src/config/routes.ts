@@ -12,8 +12,8 @@
 import { useMemory } from "../index";
 import { apiV1 } from "./env";
 
-import hello from "../actions/hello";
-import sendMail from "../actions/send_mail";
+import { hello } from "../actions/hello";
+import { sendMail } from "../actions/send_mail";
 
 
 

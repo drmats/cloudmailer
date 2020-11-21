@@ -9,11 +9,7 @@
 
 
 
-import {
-    Request,
-    Response,
-    NextFunction,
-} from "express";
+import type { RequestHandler } from "express";
 import {
     name as applicationName,
     version,
@@ -27,11 +23,8 @@ import {
  *
  * @function hello
  */
-export default function hello (
-    req: Request, res: Response, next: NextFunction
-): void {
+export const hello: RequestHandler = (req, res, next) => {
 
-    // default response data
     const responseData = {
         message: "hello",
         app: applicationName,
@@ -48,4 +41,4 @@ export default function hello (
 
     return next();
 
-}
+};
