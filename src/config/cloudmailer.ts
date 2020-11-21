@@ -41,7 +41,7 @@ interface Origin {
  * Enumerate over `domains` array and compute dictionary of form:
  * <allowed-origin: { origin configuration }>.
  */
-let compileOrigins = (domains: Domain[]) => {
+const compileOrigins = (domains: Domain[]) => {
     const fields = ["subject", "text", "html"];
     let origins: Record<string, Origin> = {};
     for (let [name, config] of domains) {
@@ -64,28 +64,44 @@ export default async function configureCloudmailer (): Promise<void> {
 
     const
 
-        // e-mail client and domain configuration files
-        secrets: Record<string, Record<string, unknown>> = {
-            client: await readJSON(
-                path.join(process.cwd(), "./secrets/client.json")
-            ),
-            config: await readJSON(
-                path.join(process.cwd(), "./secrets/config.json")
-            ),
-        },
+        // e-mail client
+        client = await readJSON(
+            path.join(process.cwd(), "./secrets/client.json")
+        ),
+
+        // domain configuration files
+        config = await readJSON(
+            path.join(process.cwd(), "./secrets/config.json")
+        ),
+
+        // allowed origins dictionary
+        origins = compileOrigins(config.domains as Domain[]),
 
         // preconfigured mail-sending function
         mail = cloudmailer({
-            user: secrets.client.user as string,
+            user: client.user as string,
             keyFile: path.join(process.cwd(), "./secrets/client_auth.json"),
         });
 
 
-    // allowed origins dictionary
-    secrets.origins = compileOrigins(secrets.config.domains as Domain[]);
-
-
     // share cloudmailer-specific variables
-    share({ secrets, mail });
+    share({ mail, secrets: { client, config, origins } });
 
+}
+
+
+
+
+/**
+ * Shared memory type augmentation.
+ */
+declare global {
+    interface Ctx {
+        mail: ReturnType<typeof cloudmailer>;
+        secrets: {
+            client: Record<string, unknown>;
+            config: Record<string, unknown>;
+            origins: ReturnType<typeof compileOrigins>;
+        };
+    }
 }
