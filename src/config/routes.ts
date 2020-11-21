@@ -9,9 +9,10 @@
 
 
 
-import { useMemory } from "@xcmats/js-toolbox/memory";
+import { useMemory } from "../index";
 import { apiV1 } from "./env";
 
+import hello from "../actions/hello";
 import sendMail from "../actions/send_mail";
 
 
@@ -22,9 +23,10 @@ import sendMail from "../actions/send_mail";
  */
 export default function configureRoutes (): void {
 
-    // shared application objects
     const { app, authOriginMw } = useMemory();
 
+    // "hello world" route
+    app.get(`${apiV1}/`, hello);
 
     // send e-mail
     app.post(`${apiV1}/send/`, authOriginMw, sendMail);

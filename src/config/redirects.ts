@@ -16,8 +16,6 @@ import {
     apiV1,
 } from "./env";
 
-import hello from "../actions/hello";
-
 
 
 
@@ -48,8 +46,5 @@ export default function configureRedirects (): void {
         res.redirect(`${apiV1}/`);
         return next();
     });
-
-    // "hello world" route
-    app.get(`${apiV1}/`, hello);
 
 }
