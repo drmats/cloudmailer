@@ -9,13 +9,7 @@
 
 
 
-import {
-    Express,
-    Request,
-    Response,
-    NextFunction,
-} from "express";
-import { useMemory } from "@xcmats/js-toolbox/memory";
+import { useMemory } from "../index";
 import {
     rootPath,
     apiRoot,
@@ -32,32 +26,25 @@ import hello from "../actions/hello";
  */
 export default function configureRedirects (): void {
 
-    // shared application objects
-    const { app } = useMemory<{ app: Express }>();
+    const { app } = useMemory();
 
 
     // in case `rootPath` is not a `/` (no-proxy redirect)
     if (rootPath !== "/") {
-        app.get("/", (
-            _req: Request, res: Response, next: NextFunction
-        ) => {
+        app.get("/", (_req, res, next) => {
             res.redirect(`${apiV1}/`);
             return next();
         });
     }
 
     // redirect: rootPath -> apiV1
-    app.get(rootPath, (
-        _req: Request, res: Response, next: NextFunction
-    ) => {
+    app.get(rootPath, (_req, res, next) => {
         res.redirect(`${apiV1}/`);
         return next();
     });
 
     // redirect: apiRoot -> apiV1
-    app.get(`${apiRoot}/`, (
-        _req: Request, res: Response, next: NextFunction
-    ) => {
+    app.get(`${apiRoot}/`, (_req, res, next) => {
         res.redirect(`${apiV1}/`);
         return next();
     });
