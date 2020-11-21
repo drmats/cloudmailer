@@ -6,6 +6,8 @@
  * @copyright Mat. 2020
  */
 
+/* eslint-disable @typescript-eslint/no-namespace */
+
 
 
 
@@ -20,8 +22,8 @@ import {
     run,
 } from "@xcmats/js-toolbox/utils";
 import {
-    useMemory,
     share,
+    useMemory as useBareMemory
 } from "@xcmats/js-toolbox/memory";
 
 import configureAuth from "./config/auth";
@@ -39,43 +41,22 @@ import { version } from "../package.json";
 
 
 /**
- * Interface extensions and custom type definitions.
+ * Type-safe instance of useMemory.
  */
-/* eslint-disable @typescript-eslint/no-namespace */
-declare global {
-
-    // app-specific NodeJS namespace declaration merging
-    namespace NodeJS {
-
-        // global object type extension
-        interface Global {
-            ctx?: Record<string, unknown>;
-        }
-
-    }
-
-    // app-specific Express namespace declaration merging
-    namespace Express {
-
-        // request object type extension
-        interface Request {
-            xhostname?: string;
-        }
-
-    }
-
-}
+export const useMemory: (() => Ctx) = useBareMemory;
 
 
 
 
-// async enclosure to run the logic - application main entry point
+/**
+ * Async enclosure to run the logic - application main entry point.
+ */
 run(async () => {
 
     const
 
         // shared application objects
-        ctx: Record<string, unknown> = useMemory(),
+        ctx = useMemory(),
 
         // express application
         app = express(),
@@ -132,10 +113,38 @@ run(async () => {
     // listen and respond to requests
     server.listen(
         port, "0.0.0.0",
-        () => (ctx as { logger: Console }).logger.info(
+        () => ctx.logger.info(
             `cloudmailer:${chalk.yellow(port)}`,
             `(${chalk.blueBright("v." + version)})`
         )
     );
 
 });
+
+
+
+
+/**
+ * Global declaration merging.
+ */
+declare global {
+
+    /**
+     * Shared memory type augmentation.
+     */
+    interface Ctx {
+        app: ReturnType<typeof express>;
+        server: ReturnType<typeof http.createServer>;
+    }
+
+    /**
+     * App-specific NodeJS namespace declaration merging:
+     * global object type extension
+     */
+    namespace NodeJS {
+        interface Global {
+            ctx?: Ctx;
+        }
+    }
+
+}
