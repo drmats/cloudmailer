@@ -86,7 +86,7 @@ export default function configureCatchall (): void {
                 let originalPath = parse(req.originalUrl).pathname;
                 if (!originalPath) {
                     res.status(500).end();
-                    return next("internal server error");
+                    return next(new Error("internal server error"));
                 }
                 if (!originalPath.endsWith("/")) originalPath += "/";
                 if (isArray(routes[originalPath])) {

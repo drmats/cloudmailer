@@ -15,8 +15,7 @@ import {
     NextFunction,
 } from "express";
 import { SendMailOptions } from "nodemailer";
-import { access } from "@xcmats/js-toolbox/struct";
-import { useMemory } from "@xcmats/js-toolbox/memory";
+import { useMemory } from "../index";
 import {
     maxBodyLength,
     maxSubjectLength
@@ -35,7 +34,7 @@ export default async function sendMail (
 ): Promise<void> {
 
     if (!req.xhostname) {
-        return next("bad route auth config");
+        return next(new Error("bad route auth config"));
     }
 
     const
@@ -43,8 +42,8 @@ export default async function sendMail (
         { secrets, mail } = useMemory(),
 
         // http 400 helper
-        badRequest = (error: string) => {
-            res.status(400).send({ error });
+        badRequest = (error: Error) => {
+            res.status(400).send({ error: error.toString() });
             return next(error);
         };
 
@@ -56,11 +55,11 @@ export default async function sendMail (
             mailOptions: SendMailOptions;
 
         // check and sanitize subject
-        if (!subject) return badRequest("no subject");
+        if (!subject) return badRequest(new Error("no subject"));
         subject = subject.substr(0, maxSubjectLength);
 
         // check and sanitize text (email body)
-        if (!text) return badRequest("no text");
+        if (!text) return badRequest(new Error("no text"));
         text = text.substr(0, maxBodyLength);
 
         // basic mail options
@@ -84,11 +83,9 @@ export default async function sendMail (
     } catch (e) {
 
         if (e instanceof TypeError) {
-            return badRequest(e.message);
+            return badRequest(e);
         } else {
-            res.status(404).send(access(
-                e, ["response", "data"], Object.keys(e)
-            ));
+            res.status(404).send(e);
             return next(e);
         }
 

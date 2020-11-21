@@ -8,19 +8,26 @@
 
 
 
-
-import {
-    Errback,
-    Express,
+import type {
     Request,
     Response,
     NextFunction,
 } from "express";
+import type { JSAnyFun } from "@xcmats/js-toolbox/type";
 import chalk from "chalk";
-import {
-    useMemory,
-    share,
-} from "@xcmats/js-toolbox/memory";
+import { share } from "@xcmats/js-toolbox/memory";
+import { useMemory } from "../index";
+
+
+
+
+/**
+ * Extended console.
+ */
+interface ExtendedConsole extends Console {
+    ok: JSAnyFun;
+    err: JSAnyFun;
+}
 
 
 
@@ -33,7 +40,7 @@ export default function configureLogging (): void {
     const
 
         // shared application objects
-        { app } = useMemory<{ app: Express }>(),
+        { app } = useMemory(),
 
         // console logger
         logger = {
@@ -61,7 +68,7 @@ export default function configureLogging (): void {
 
 
     // simple request logger
-    app.use((req: Request, res: Response, next: NextFunction) => {
+    app.use((req, res, next) => {
 
         // don't log successful cors preflight checks
         if (req.method !== "OPTIONS"  ||  res.statusCode !== 204) {
@@ -83,7 +90,7 @@ export default function configureLogging (): void {
 
     // simple error handler/logger
     app.use((
-        error: Errback, req: Request, res: Response, _next: NextFunction
+        error: Error, req: Request, res: Response, _next: NextFunction
     ) => {
 
         if (res.headersSent) {
@@ -110,4 +117,16 @@ export default function configureLogging (): void {
 
     });
 
+}
+
+
+
+
+/**
+ * Shared memory type augmentation.
+ */
+declare global {
+    interface Ctx {
+        logger: ExtendedConsole;
+    }
 }

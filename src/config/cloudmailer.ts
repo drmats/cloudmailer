@@ -99,7 +99,7 @@ declare global {
     interface Ctx {
         mail: ReturnType<typeof cloudmailer>;
         secrets: {
-            client: Record<string, unknown>;
+            client: Record<string, string>;
             config: Record<string, unknown>;
             origins: ReturnType<typeof compileOrigins>;
         };
