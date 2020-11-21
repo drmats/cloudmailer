@@ -30,7 +30,7 @@ export default function configureAuth (): void {
         { secrets } = useMemory(),
 
         // origin-check middleware
-        authOriginMw: RequestHandler = async (req, res, next) => {
+        authOriginMw: RequestHandler = (req, res, next) => {
 
             const
                 // site originating request
