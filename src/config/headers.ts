@@ -9,13 +9,7 @@
 
 
 
-import {
-    Express,
-    Request,
-    Response,
-    NextFunction,
-} from "express";
-import { useMemory } from "@xcmats/js-toolbox/memory";
+import { useMemory } from "../index";
 import {
     name as applicationName,
     version,
@@ -29,14 +23,14 @@ import {
  */
 export default function configureHeaders (): void {
 
-    // shared application objects
-    const { app } = useMemory<{ app: Express }>();
+    const { app } = useMemory();
 
+    app.use((req, res, next) => {
 
-    app.use((req: Request, res: Response, next: NextFunction) => {
         if (req.method === "OPTIONS") {
             res.header({ "Access-Control-Max-Age": 1209600 });
         }
+
         res.header({
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Headers": [
@@ -62,7 +56,9 @@ export default function configureHeaders (): void {
             ].join(", "),
             "X-Powered-By": `${applicationName}/${version}`,
         });
+
         return next();
+
     });
 
 }
