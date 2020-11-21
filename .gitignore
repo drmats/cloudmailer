@@ -8,3 +8,6 @@
 /secrets/client_auth.json
 /secrets/client.json
 /secrets/config.json
+
+# npm
+package-lock.json
