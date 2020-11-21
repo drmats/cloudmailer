@@ -9,25 +9,22 @@
 
 
 
-import {
+import type {
     Express,
-    Request,
     Router as ExpressRouter,
-    Response,
-    NextFunction,
 } from "express";
 import { dict } from "@xcmats/js-toolbox/struct";
 import { isArray } from "@xcmats/js-toolbox/type";
-import {
-    useMemory,
-    share,
-} from "@xcmats/js-toolbox/memory";
+import { share } from "@xcmats/js-toolbox/memory";
 import { parse } from "url";
+import { useMemory } from "../index";
 
 
 
 
-// type definitions for some express.js internals
+/**
+ * Type definitions for some express.js internals.
+ */
 interface Route {
     path: string;
     methods: Record<string, string>;
@@ -52,11 +49,11 @@ export default function configureCatchall (): void {
 
     const
 
-        // shared application objects
-        { app } = useMemory<{ app: ExpressApp }>(),
+        // explicit cast to an extended type
+        { app } = useMemory() as { app: ExpressApp },
 
         // routes (pathnames with trailing slashes) and their allowed methods
-        routes: Record<string, string[]> = dict(
+        routes = dict(
             app._router.stack
                 // find layer with routes
                 .filter(l => l.route)
@@ -81,7 +78,7 @@ export default function configureCatchall (): void {
 
 
     // catch-all (404)
-    app.use("*", (req: Request, res: Response, next: NextFunction) => {
+    app.use("*", (req, res, next) => {
         if (!res.headersSent) {
             if (req.method !== "OPTIONS") {
                 res.status(404).send({ error: "not found" });
@@ -103,4 +100,16 @@ export default function configureCatchall (): void {
         return next();
     });
 
+}
+
+
+
+
+/**
+ * Shared memory type augmentation.
+ */
+declare global {
+    interface Ctx {
+        routes: Record<string, string[]>;
+    }
 }
