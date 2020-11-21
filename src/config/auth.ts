@@ -6,19 +6,15 @@
  * @copyright Mat. 2020
  */
 
+/* eslint-disable @typescript-eslint/no-namespace */
 
 
 
-import {
-    Request,
-    Response,
-    NextFunction,
-} from "express";
+
+import type { RequestHandler } from "express";
 import { parse } from "url";
-import {
-    share,
-    useMemory,
-} from "@xcmats/js-toolbox/memory";
+import { share } from "@xcmats/js-toolbox/memory";
+import { useMemory } from "../index";
 
 
 
@@ -30,13 +26,11 @@ export default function configureAuth (): void {
 
     const
 
-        // shared application objects
+        // shared application secrets
         { secrets } = useMemory(),
 
         // origin-check middleware
-        authOriginMw = async (
-            req: Request, res: Response, next: NextFunction
-        ) => {
+        authOriginMw: RequestHandler = async (req, res, next) => {
 
             const
                 // site originating request
@@ -69,5 +63,36 @@ export default function configureAuth (): void {
 
     // share this middleware
     share({ authOriginMw });
+
+}
+
+
+
+
+/**
+ * Global declaration merging.
+ */
+declare global {
+
+    /**
+     * Shared memory type augmentation.
+     */
+    interface Ctx {
+        authOriginMw: RequestHandler;
+    }
+
+    /**
+     * App-specific Express namespace declaration merging.
+     */
+    namespace Express {
+
+        /**
+         * Request object type extension.
+         */
+        interface Request {
+            xhostname?: string;
+        }
+
+    }
 
 }
