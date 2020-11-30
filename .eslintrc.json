@@ -64,9 +64,11 @@
             "rules": {
                 "@typescript-eslint/interface-name-prefix": "off",
                 "@typescript-eslint/no-unused-vars": ["warn", {"args": "all", "argsIgnorePattern": "^_"}],
+                "@typescript-eslint/no-non-null-assertion": "off",
                 "prefer-const": "off",
                 "semi": "off",
-                "@typescript-eslint/semi": ["error", "always"]
+                "@typescript-eslint/semi": ["error", "always"],
+                "@typescript-eslint/indent": ["off"]
             }
         }
     ]
