@@ -90,7 +90,7 @@ export default function configureCatchall (): void {
                 }
                 if (!originalPath.endsWith("/")) originalPath += "/";
                 if (isArray(routes[originalPath])) {
-                    res.header({ "Allow": routes[originalPath].join(",") });
+                    res.header({ "Allow": routes[originalPath]!.join(",") });
                     res.status(204).end();
                 } else {
                     res.status(204).end();
