@@ -24,7 +24,7 @@ import {
 import {
     share,
     useMemory as useBareMemory
-} from "@xcmats/js-toolbox/memory";
+} from "mem-box";
 
 import configureAuth from "./config/auth";
 import configureCatchAll from "./config/catchall";

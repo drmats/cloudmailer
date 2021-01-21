@@ -13,7 +13,7 @@
 
 import type { RequestHandler } from "express";
 import { parse } from "url";
-import { share } from "@xcmats/js-toolbox/memory";
+import { share } from "mem-box";
 import { useMemory } from "../index";
 
 

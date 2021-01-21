@@ -15,7 +15,7 @@ import type {
 } from "express";
 import { dict } from "@xcmats/js-toolbox/struct";
 import { isArray } from "@xcmats/js-toolbox/type";
-import { share } from "@xcmats/js-toolbox/memory";
+import { share } from "mem-box";
 import { parse } from "url";
 import { useMemory } from "../index";
 

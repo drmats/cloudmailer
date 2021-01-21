@@ -15,7 +15,7 @@ import type {
 } from "express";
 import type { JSAnyFun } from "@xcmats/js-toolbox/type";
 import chalk from "chalk";
-import { share } from "@xcmats/js-toolbox/memory";
+import { share } from "mem-box";
 import { useMemory } from "../index";
 
 
