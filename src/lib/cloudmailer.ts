@@ -27,7 +27,7 @@ import SMTPTransport from "nodemailer/lib/smtp-transport";
  * @returns configured email-sending function
  */
 export default function cloudmailer (
-    { user, keyFile }: { user: string, keyFile: string }
+    { user, keyFile }: { user: string, keyFile: string },
 ):
     (mailOptions: SendMailOptions) => Promise<SentMessageInfo>
 {

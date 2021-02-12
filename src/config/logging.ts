@@ -13,7 +13,7 @@ import type {
     Response,
     NextFunction,
 } from "express";
-import type { JSAnyFun } from "@xcmats/js-toolbox/type";
+import type { Fun } from "@xcmats/js-toolbox/type";
 import chalk from "chalk";
 import { share } from "mem-box";
 import { useMemory } from "../index";
@@ -25,8 +25,8 @@ import { useMemory } from "../index";
  * Extended console.
  */
 interface ExtendedConsole extends Console {
-    ok: JSAnyFun;
-    err: JSAnyFun;
+    ok: Fun;
+    err: Fun;
 }
 
 
@@ -77,7 +77,7 @@ export default function configureLogging (): void {
                 req.ip, chalk.gray(req.method), req.url,
                 (
                     res.statusCode < 400 ? chalk.green : chalk.red
-                )(res.statusCode)
+                )(res.statusCode),
             );
 
         }
@@ -90,7 +90,7 @@ export default function configureLogging (): void {
 
     // simple error handler/logger
     app.use((
-        error: Error, req: Request, res: Response, _next: NextFunction
+        error: Error, req: Request, res: Response, _next: NextFunction,
     ) => {
 
         if (res.headersSent) {
@@ -98,7 +98,7 @@ export default function configureLogging (): void {
             logger.info(
                 chalk.red(req.ip),
                 chalk.gray(req.method), req.url,
-                chalk.red(res.statusCode)
+                chalk.red(res.statusCode),
             );
 
         } else {
@@ -108,7 +108,7 @@ export default function configureLogging (): void {
             logger.info(
                 chalk.red(req.ip),
                 chalk.gray(req.method), req.url,
-                chalk.red(500), chalk.red("!")
+                chalk.red(500), chalk.red("!"),
             );
 
             logger.err(error.toString());

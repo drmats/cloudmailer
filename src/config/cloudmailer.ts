@@ -66,12 +66,12 @@ export default async function configureCloudmailer (): Promise<void> {
 
         // e-mail client
         client = await readJSON(
-            path.join(process.cwd(), "./secrets/client.json")
+            path.join(process.cwd(), "./secrets/client.json"),
         ),
 
         // domain configuration files
         config = await readJSON(
-            path.join(process.cwd(), "./secrets/config.json")
+            path.join(process.cwd(), "./secrets/config.json"),
         ),
 
         // allowed origins dictionary

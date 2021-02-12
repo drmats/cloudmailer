@@ -66,10 +66,10 @@ export default function configureCatchall (): void {
                 ])
                 // append "HEAD" method to all routes with "GET" method
                 .map<[string, string[]]>(([p, m]) =>
-                    [p, m.concat(m.find(v => v === "GET") ? ["HEAD"] : [])]
+                    [p, m.concat(m.find(v => v === "GET") ? ["HEAD"] : [])],
                 )
                 // sort by path
-                .sort(([a, _1], [b, _2]) => a.localeCompare(b))
+                .sort(([a, _1], [b, _2]) => a.localeCompare(b)),
         );
 
 

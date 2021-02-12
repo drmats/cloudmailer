@@ -14,7 +14,7 @@ import type { SendMailOptions } from "nodemailer";
 import { useMemory } from "../index";
 import {
     maxBodyLength,
-    maxSubjectLength
+    maxSubjectLength,
 } from "../config/env";
 
 

@@ -23,7 +23,7 @@ import {
 } from "@xcmats/js-toolbox/utils";
 import {
     share,
-    useMemory as useBareMemory
+    useMemory as useBareMemory,
 } from "mem-box";
 
 import configureAuth from "./config/auth";
@@ -115,8 +115,8 @@ run(async () => {
         port, "0.0.0.0",
         () => ctx.logger.info(
             `cloudmailer:${chalk.yellow(port)}`,
-            `(${chalk.blueBright("v." + version)})`
-        )
+            `(${chalk.blueBright("v." + version)})`,
+        ),
     );
 
 });
