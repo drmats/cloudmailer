@@ -10,6 +10,9 @@
 
 
 import { promises } from "fs";
+import { ap } from "@xcmats/js-toolbox/async";
+import { flow } from "@xcmats/js-toolbox/func";
+import { bytesToString } from "@xcmats/js-toolbox/codec";
 
 
 
@@ -21,9 +24,11 @@ import { promises } from "fs";
  * @param path file
  * @returns parsed object
  */
-export const readJSON = async (
-    path: string
-): Promise<Record<string, unknown>> =>
-    JSON.parse(
-        (await promises.readFile(path)).toString("utf8")
+export const readJSON: (
+    arg: string,
+) => Promise<Record<string, unknown>> =
+    flow(
+        promises.readFile,
+        ap(bytesToString),
+        ap(JSON.parse),
     );
