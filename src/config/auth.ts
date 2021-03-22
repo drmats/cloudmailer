@@ -12,7 +12,6 @@
 
 
 import type { RequestHandler } from "express";
-import { parse } from "url";
 import { share } from "mem-box";
 import { useMemory } from "../index";
 
@@ -47,7 +46,7 @@ export default function configureAuth (): void {
             if (!origin) return forbidden("no origin");
 
             // check if provided origin is valid
-            let hostname = parse(origin).hostname;
+            let hostname = (new URL(origin)).hostname;
             if (!hostname) return forbidden("origin invalid");
 
             // check if provided origin is allowed

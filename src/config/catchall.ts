@@ -16,7 +16,6 @@ import type {
 import { dict } from "@xcmats/js-toolbox/struct";
 import { isArray } from "@xcmats/js-toolbox/type";
 import { share } from "mem-box";
-import { parse } from "url";
 import { useMemory } from "../index";
 
 
@@ -83,7 +82,7 @@ export default function configureCatchall (): void {
             if (req.method !== "OPTIONS") {
                 res.status(404).send({ error: "not found" });
             } else {
-                let originalPath = parse(req.originalUrl).pathname;
+                let originalPath = (new URL(req.originalUrl)).pathname;
                 if (!originalPath) {
                     res.status(500).end();
                     return next(new Error("internal server error"));
