@@ -17,6 +17,7 @@ import { dict } from "@xcmats/js-toolbox/struct";
 import { isArray } from "@xcmats/js-toolbox/type";
 import { share } from "mem-box";
 import { useMemory } from "../index";
+import { port } from "./server.json";
 
 
 
@@ -37,6 +38,9 @@ interface Router extends ExpressRouter {
 interface ExpressApp extends Express {
     _router: Router;
 }
+interface ExtendedCtx extends Ctx {
+    app: ExpressApp;
+}
 
 
 
@@ -49,7 +53,7 @@ export default function configureCatchall (): void {
     const
 
         // explicit cast to an extended type
-        { app } = useMemory() as { app: ExpressApp },
+        { app } = useMemory() as ExtendedCtx,
 
         // routes (pathnames with trailing slashes) and their allowed methods
         routes = dict(
@@ -82,7 +86,10 @@ export default function configureCatchall (): void {
             if (req.method !== "OPTIONS") {
                 res.status(404).send({ error: "not found" });
             } else {
-                let originalPath = (new URL(req.originalUrl)).pathname;
+                let originalPath = (new URL(
+                    req.originalUrl,
+                    `http://localhost:${port}/`,
+                )).pathname;
                 if (!originalPath) {
                     res.status(500).end();
                     return next(new Error("internal server error"));
@@ -92,6 +99,7 @@ export default function configureCatchall (): void {
                     res.header({ "Allow": routes[originalPath]!.join(",") });
                     res.status(204).end();
                 } else {
+                    res.header({ "Allow": "GET" });
                     res.status(204).end();
                 }
             }
