@@ -32,7 +32,6 @@ module.exports = {
 
     externals: [nodeExternals({
         allowlist: [
-            /@babel\/runtime(\/.*)?/,
             /@xcmats\/js-toolbox(\/.*)?/,
         ],
     })],

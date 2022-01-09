@@ -6,32 +6,20 @@
 // ...
 var
 
-    runtimeVersion = require(
-        "./package.json",
-    ).dependencies["@babel/runtime-corejs3"],
-
     conf = {
-        plugins: [
-            "@babel/plugin-proposal-class-properties",
-            [
-                "@babel/plugin-transform-runtime",
-                {
-                    absoluteRuntime: false,
-                    helpers: true,
-                    corejs: 3,
-                    version: runtimeVersion,
-                },
-            ],
-        ],
         presets: [
             [
                 "@babel/preset-env",
                 {
+                    exclude: [
+                        "transform-async-to-generator",
+                        "transform-regenerator",
+                    ],
                     modules: "commonjs",
-                    useBuiltIns: false,
                     targets: {
-                        node: "12.0.0",
+                        node: "14.0.0",
                     },
+                    useBuiltIns: false,
                 },
             ],
             [

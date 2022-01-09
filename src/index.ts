@@ -141,10 +141,7 @@ declare global {
      * App-specific NodeJS namespace declaration merging:
      * global object type extension
      */
-    namespace NodeJS {
-        interface Global {
-            ctx?: Ctx;
-        }
-    }
+    // eslint-disable-next-line no-var
+    var ctx: Ctx;
 
 }
